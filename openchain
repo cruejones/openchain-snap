@@ -1,0 +1,6 @@
+#!/bin/bash
+
+DLL_PATH="usr/share/dotnet/openchain-core"
+DLL="openchain.dll"
+
+cd $SNAP/${DLLPATH} && dotnet ${DLL}
