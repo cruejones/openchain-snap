@@ -3,4 +3,4 @@
 DLL_PATH="usr/share/dotnet/openchain-core"
 DLL="openchain.dll"
 
-cd $SNAP/${DLLPATH} && dotnet ${DLL}
+cd $SNAP/${DLL_PATH} && dotnet ${DLL}
