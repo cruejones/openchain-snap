@@ -4,6 +4,9 @@
 NAME = openchain-core
 OUTDIR = ../../../openchain-core
 
+default:
+
+
 install: 
 	mkdir -p data
 	wget -O project.json https://raw.githubusercontent.com/openchain/openchain/v0.6.2/src/Openchain/project.json 
