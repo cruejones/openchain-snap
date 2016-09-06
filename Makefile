@@ -2,9 +2,8 @@
 # Makefile for openchain
 #
 NAME = openchain-core
-TOPDIR = ../../../..
+TOPDIR = ../../../
 OUTDIR = $(TOPDIR)/openchain-core
-HN = `hostname`
 
 OPENCHAIN_RELEASE=v0.6.2
 
