@@ -2,19 +2,22 @@
 # Makefile for openchain
 #
 NAME = openchain-core
-OUTDIR = ../../../openchain-core
+TOPDIR = ../../../..
+OUTDIR = $(TOPDIR)/openchain-core
 HN = `hostname`
 
+OPENCHAIN_RELEASE=v0.6.2
+
+# default target does nothing so the snapcraft make plugin can do "make && make install" and not fail
 default:
 
 
-install: 
-	mkdir -p $(OUTDIR)/data
-	wget -O project.json https://raw.githubusercontent.com/openchain/openchain/v0.6.2/src/Openchain/project.json 
-	wget -O Program.cs https://raw.githubusercontent.com/openchain/openchain/v0.6.2/src/Openchain/Program.cs
-	wget -O $(OUTDIR)/data/config.json https://raw.githubusercontent.com/openchain/openchain/v0.6.2/src/Openchain/data/config.json
-	sed -e "s|ledger.db|/var/snap/openchain/curent/ledger.db|g" $(OUTDIR)/data/config.json > $(OUTDIR)/data/config.json.tmp
-	mv $(OUTDIR)/data/config.json.tmp $(OUTDIR)/data/config.json
-	sed -e "s|anchors.db|/var/snap/openchain/current/anchors.db|g" $(OUTDIR)/data/config.json > $(OUTDIR)/data/config.json.tmp
-	mv $(OUTDIR)/data/config.json.tmp $(OUTDIR)/data/config.json
-	dotnet restore && dotnet publish -o $(OUTDIR)
+install:
+	# Use modified source to adjust contentRootPath of .net app to a writeable location for the snapped executable
+	git clone https://github.com/mikemccracken/openchain openchain-src
+	# git clone https://github.com/openchain/openchain openchain-src
+	# cd openchain-src && git checkout $(OPENCHAIN_RELEASE) -b $(OPENCHAIN_RELEASE)
+
+	cd openchain-src && dotnet restore src/**/project.json && dotnet build src/Openchain && dotnet publish src/Openchain -o $(OUTDIR)
+	cd openchain-src && mkdir -p $(OUTDIR)/data
+	cd openchain-src && cp src/Openchain/data/config.json $(OUTDIR)/data
