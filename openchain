@@ -1,6 +1,9 @@
 #!/bin/bash
 
 DLL_PATH="usr/share/dotnet/openchain-core"
-DLL="build.dll"
+DLL="Openchain.dll"
+
+mkdir -p ${SNAP_USER_DATA}/data
+[ -e ${SNAP_USER_DATA}/data/config.json ] || cp ${SNAP}/${DLL_PATH}/data/config.json ${SNAP_USER_DATA}/data/config.json
 
 cd $SNAP/${DLL_PATH} && dotnet ${DLL}
