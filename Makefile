@@ -2,19 +2,17 @@
 # Makefile for openchain
 #
 NAME = openchain-core
-OUTDIR = ../../../openchain-core
-HN = `hostname`
+TOPDIR = ../../../
+OUTDIR = $(TOPDIR)/openchain-core
 
 default:
 
+install:
+	git clone https://github.com/openchain/openchain openchain-src
+	# cd openchain-src && git checkout $(OPENCHAIN_RELEASE) -b $(OPENCHAIN_RELEASE)
 
-install: 
-	mkdir -p $(OUTDIR)/data
-	wget -O project.json https://raw.githubusercontent.com/openchain/openchain/v0.6.2/src/Openchain/project.json 
-	wget -O Program.cs https://raw.githubusercontent.com/openchain/openchain/v0.6.2/src/Openchain/Program.cs
-	wget -O $(OUTDIR)/data/config.json https://raw.githubusercontent.com/openchain/openchain/v0.6.2/src/Openchain/data/config.json
-	sed -e "s|ledger.db|/var/snap/openchain/curent/ledger.db|g" $(OUTDIR)/data/config.json > $(OUTDIR)/data/config.json.tmp
-	mv $(OUTDIR)/data/config.json.tmp $(OUTDIR)/data/config.json
-	sed -e "s|anchors.db|/var/snap/openchain/current/anchors.db|g" $(OUTDIR)/data/config.json > $(OUTDIR)/data/config.json.tmp
-	mv $(OUTDIR)/data/config.json.tmp $(OUTDIR)/data/config.json
-	dotnet restore && dotnet publish -o $(OUTDIR)
+	cd openchain-src && cat src/**/Program.cs | sed -e 's/UseContentRoot(Directory.GetCurrentDirectory())/UseContentRoot(Environment.GetEnvironmentVariable("HOME"))/g' > /tmp/Program.cs.tmp
+	mv /tmp/Program.cs.tmp openchain-src/src/**/Program.cs
+	cd openchain-src && dotnet restore src/**/project.json && dotnet build src/Openchain && dotnet publish src/Openchain -o $(OUTDIR)
+	cd openchain-src && mkdir -p $(OUTDIR)/data
+	cd openchain-src && cp src/Openchain/data/config.json $(OUTDIR)/data
