@@ -2,8 +2,10 @@
 # Makefile for openchain
 #
 NAME = openchain-core
-TOPDIR = ../../../
+TOPDIR = ../../../..
 OUTDIR = $(TOPDIR)/openchain-core
+
+OPENCHAIN_RELEASE=v0.6.2
 
 default:
 
