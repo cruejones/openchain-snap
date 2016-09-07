@@ -2,12 +2,11 @@
 # Makefile for openchain
 #
 NAME = openchain-core
-TOPDIR = ../../../
+TOPDIR = ../../../..
 OUTDIR = $(TOPDIR)/openchain-core
 
 OPENCHAIN_RELEASE=v0.6.2
 
-# default target does nothing so the snapcraft make plugin can do "make && make install" and not fail
 default:
 
 
